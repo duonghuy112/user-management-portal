@@ -1,0 +1,71 @@
+<button [hidden]="true" type="button" id="openUserEdit" data-toggle="modal" data-target="#editUserModal"></button>
+
+<div class="modal draggable fade bd-example-modal-lg" id="editUserModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center">Edit {{ selectedUser?.firstName }} {{ selectedUser?.lastName }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeUserUpdateModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form [formGroup]="userUpdateFormGroup" (ngSubmit)="onSubmitUserUpdate()">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input [readonly]="isHrOrManager" formControlName="username" type="text" name="username" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input [readonly]="isHrOrManager" formControlName="firstName" type="text" name="firstName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input [readonly]="isHrOrManager" formControlName="lastName" type="text" name="lastName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input [readonly]="isHrOrManager" formControlName="email" type="email" name="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="authority">
+                                Role <small [hidden]="isSuperAdmin">(read only)</small>
+                            </label>
+                            <select name="roleId" formControlName="roleId" class="form-control">
+                                <option value="" disabled selected hidden>Choose one role...</option>
+                                <option *ngFor="let role of roles" [disabled]="!isSuperAdmin" value="{{ role.id }}">{{ role.name }}</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Profile Picture </span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" accept="image/*" name="profileImage" class="custom-file-input" (change)="onProfileImageChange($event.target.files[0].name, $event.target.files[0])">
+                                <label class="custom-file-label">
+                                    <span [hidden]="!fileName">{{ fileName }}</span>
+                                    <span [hidden]="fileName">Choose File</span>
+                                </label>
+                            </div>
+                        </div>
+                        <fieldset class="form-group">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" name="isActive" [readonly]="isHrOrManager" formControlName="isActive" class="form-check-input">
+                                    Active
+                                </label>
+                            </div>
+                        </fieldset>
+                        <button type="submit" style="display: none;" id="saveUserUpdate"></button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" (click)="closeUserUpdateModal()" class="btn btn-secondary" data-dismiss="modal" id="closeEditUserModal">Close</button>
+                <button type="button" (click)="saveUpdateUser()" [disabled]="userUpdateFormGroup.invalid || !(isSuperAdmin || isAdmin)" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

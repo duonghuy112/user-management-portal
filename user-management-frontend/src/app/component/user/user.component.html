@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="row mb-2 mt-2 text-center">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-4">
+            <h5>User Management Portal</h5>
+            <small *ngIf="titleAction$ | async as title">{{ title }}</small>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+
+    <!-- nav bar -->
+    <nav class="navbar navbar-expand-md breadcrumb">
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="nav nav-pills">
+                <a class="nav-item nav-link active ml-1" data-toggle="tab" (click)="onChangeTitle('Users')" href="#users">
+                    <i class="fa fa-users"></i> Users
+                </a>
+                <a class="nav-item nav-link ml-3" data-toggle="tab" (click)="onChangeTitle('Settings')" href="#change-password">
+                    <i class=" fa fa-cogs "></i> Settings
+                </a>
+                <a class="nav-item nav-link move-right mr-3" data-toggle="tab" (click)="onChangeTitle('Profile')" href="#user-profile">
+                    Welcome, {{ user.lastName }}
+                    <i class="fa fa-user "></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- main content -->
+    <div class="tab-content mt-3" id="myTabContent">
+
+        <!-- user table -->
+        <div class="tab-pane fade show active" id="users">
+            <app-user-list [user]="user"></app-user-list>
+        </div>
+
+        <!-- change password tab -->
+        <div class="tab-pane fade" id="change-password">
+            <app-user-change-password [userId]="userLoginId"></app-user-change-password>
+        </div>
+
+        <!-- user profile tab -->
+        <div class="tab-pane fade" id="user-profile">
+            <app-user-profile [user]="user" (updatedUser)="refreshUser($event)"></app-user-profile>
+        </div>
+
+    </div>
+
+</div>

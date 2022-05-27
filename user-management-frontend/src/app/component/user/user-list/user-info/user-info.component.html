@@ -1,0 +1,74 @@
+<button [hidden]="true" type="button" id="openUserInfo" data-toggle="modal" data-target="#viewUserModal"></button>
+
+<!-- modal user info -->
+<div class="modal fade bd-example-modal-lg" id="viewUserModal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="exampleModalLongTitle">{{selectedUser?.firstName}} {{selectedUser?.lastName}}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-sm-auto">
+                                    <div class="mx-auto" style="width: 120px;">
+                                        <div class="d-flex justify-content-center align-items-center rounded">
+                                            <img class="rounded" height="120" width="120" src="{{selectedUser?.avatarUrl}}" alt="{{selectedUser?.firstName}}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col d-flex flex-column flex-sm-row justify-content-between">
+                                    <div class="text-center text-sm-left mb-sm-0">
+                                        <h6 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{selectedUser?.firstName}} {{selectedUser?.lastName}}
+                                        </h6>
+                                        <p class="mb-1">ID: {{selectedUser?.id}}</p>
+                                        <p class="mb-1">Username: {{selectedUser?.username}}</p>
+                                        <div class="">Status:
+                                            <span [hidden]="!selectedUser?.isActive" class="badge badge-success">Active</span>
+                                            <span [hidden]="selectedUser?.isActive" class="badge badge-danger">Inactive</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-center text-sm-right">
+                                        <div class="text-muted"><small>Joined: {{selectedUser?.joinDate | date: 'mediumDate'}}</small></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"></li>
+                            <li class="list-group-item">
+                                <i class="fa fa-id-badge float-right"></i>{{selectedUser?.username}}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fa fa-envelope float-right"></i>{{selectedUser?.email}}
+                            </li>
+                            <li class="list-group-item">
+                                <i class="fas fa-shield-alt float-right"></i>{{selectedUser?.role.name}}
+                            </li>
+                            <li *ngIf="selectedUser?.lastLoginDate" class="list-group-item">
+                                <i class="fas fa-sign-in-alt float-right"></i>{{selectedUser?.lastLoginDate | date: 'medium'}}
+                            </li>
+                            <li class="list-group-item">
+                                <span [hidden]="selectedUser?.isActive">
+                                  <i class="fa fa-lock float-right" style="color: red;"></i>Account Locked
+                              </span>
+                                <span [hidden]="!selectedUser?.isActive">
+                                  <i class="fa fa-unlock float-right" style="color: green;"></i>Account Active
+                              </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
