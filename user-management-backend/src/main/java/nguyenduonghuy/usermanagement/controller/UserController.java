@@ -21,6 +21,8 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +74,13 @@ public class UserController {
 	private JwtTokenProvider jwtTokenProvider;
 
 	@GetMapping("/list")
+	public ResponseEntity<Page<UserResponse>> getAllPaging(@RequestParam Long id, @RequestParam(required = false) String keyword, 
+														   @RequestParam int pageNum, @RequestParam int pageSize) {
+		keyword = StringUtils.isNotBlank(keyword) ? keyword.trim() : StringUtils.EMPTY;
+		return new ResponseEntity<>(userService.getAllPaging(id, pageNum, pageSize, keyword), HttpStatus.OK);
+	}
+
+//	@GetMapping("/list")
 	public ResponseEntity<List<UserResponse>> getAll(@RequestParam Long id) {
 		List<UserResponse> userResponses = userService.getAll(id);
 		return new ResponseEntity<>(userResponses, HttpStatus.OK);

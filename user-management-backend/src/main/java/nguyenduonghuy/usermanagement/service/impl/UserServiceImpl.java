@@ -1,8 +1,25 @@
 package nguyenduonghuy.usermanagement.service.impl;
 
-import static nguyenduonghuy.usermanagement.constant.UserServiceImplConstant.*;
-import static nguyenduonghuy.usermanagement.constant.FileConstant.*;
-import static org.springframework.http.MediaType.*;
+import static nguyenduonghuy.usermanagement.constant.FileConstant.DEFAULT_USER_IMAGE_PATH;
+import static nguyenduonghuy.usermanagement.constant.FileConstant.DIRECTORY_CREATED;
+import static nguyenduonghuy.usermanagement.constant.FileConstant.DOT;
+import static nguyenduonghuy.usermanagement.constant.FileConstant.FILE_SAVED_IN_FILE_SYSTEM;
+import static nguyenduonghuy.usermanagement.constant.FileConstant.FORWARD_SLASH;
+import static nguyenduonghuy.usermanagement.constant.FileConstant.JPG_EXTENSION;
+import static nguyenduonghuy.usermanagement.constant.FileConstant.NOT_AN_IMAGE_FILE;
+import static nguyenduonghuy.usermanagement.constant.FileConstant.USER_FOLDER;
+import static nguyenduonghuy.usermanagement.constant.FileConstant.USER_IMAGE_PATH;
+import static nguyenduonghuy.usermanagement.constant.UserServiceImplConstant.EMAIL_ALREADY_EXISTS;
+import static nguyenduonghuy.usermanagement.constant.UserServiceImplConstant.FOUND_USER_BY_USERNAME;
+import static nguyenduonghuy.usermanagement.constant.UserServiceImplConstant.NO_USER_FOUND_BY_EMAIL;
+import static nguyenduonghuy.usermanagement.constant.UserServiceImplConstant.NO_USER_FOUND_BY_ID;
+import static nguyenduonghuy.usermanagement.constant.UserServiceImplConstant.NO_USER_FOUND_BY_USERNAME;
+import static nguyenduonghuy.usermanagement.constant.UserServiceImplConstant.PASSWORD_INCORRECT;
+import static nguyenduonghuy.usermanagement.constant.UserServiceImplConstant.USERNAME_ALREADY_EXISTS;
+import static nguyenduonghuy.usermanagement.constant.UserServiceImplConstant.USERNAME_EMAIL_INCORRECT;
+import static org.springframework.http.MediaType.IMAGE_GIF_VALUE;
+import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
+import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +40,7 @@ import javax.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -78,6 +96,12 @@ public class UserServiceImpl implements UserService{
 		UserPrincipal userPrincipal = new UserPrincipal(user);
 		log.info(FOUND_USER_BY_USERNAME + username);
 		return userPrincipal;
+	}
+	
+	@Override
+	public Page<UserResponse> getAllPaging(Long id, int pageNum, int pageSize, String keyword) {
+		return userRepository.findAllPaging(id, Status.WORKING, keyword, PageRequest.of(pageNum, pageSize))
+							 .map(UserResponse::new);
 	}
 
 	@Override

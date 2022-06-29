@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import nguyenduonghuy.usermanagement.domain.dto.request.UserAdd;
@@ -23,6 +24,8 @@ import nguyenduonghuy.usermanagement.exception.UsernameEmailIncorrectException;
 import nguyenduonghuy.usermanagement.exception.UsernameExistException;
 
 public interface UserService extends UserDetailsService {
+	
+	Page<UserResponse> getAllPaging(Long id, int pageNum, int pageSize, String keyword);
 
 	List<UserResponse> getAll(Long id);
 
